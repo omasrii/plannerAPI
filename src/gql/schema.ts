@@ -51,11 +51,20 @@ const typeDefs = gql`
   type Query {
     user(id: Int!): User
     allUsers(limit: Int, offset: Int): [User]
+    phase(id: Int!): Phase
+    allPhases(limit: Int, offset: Int): [Phase]
   }
 
   type Mutation {
     createUser(name: String!, weight: Int!): User!
     updateUser(id: Int!, name: String!, weight: Int!): User!
+    addPhase(
+      username: String!
+      date: String!
+      user_id: Int!
+      name: String!
+    ): Phase!
+    updatePhase(id: Int!, date: String!, user_id: Int!, name: String!): Phase!
   }
 `;
 

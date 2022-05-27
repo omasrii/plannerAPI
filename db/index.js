@@ -171,9 +171,10 @@ const addPhase = async (username, newPhase) => {
 
 const updatePhase = async (updatedPhase) => {
   const { id, date, user_id, name } = updatedPhase;
+  console.log(updatedPhase);
   return new Promise(async (resolve, reject) => {
     try {
-      const phase = await models.Phase.update(
+      await models.Phase.update(
         {
           date: date, //if newDate isn't in the correct format, it still runs but won't update that field
           user_id: user_id,
@@ -185,6 +186,11 @@ const updatePhase = async (updatedPhase) => {
           },
         }
       );
+
+      const phase = await models.Phase.findByPk(id);
+
+      console.log(phase);
+
       resolve(phase);
     } catch (err) {
       reject(err);

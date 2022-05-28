@@ -50,21 +50,48 @@ const typeDefs = gql`
 
   type Query {
     user(id: Int!): User
-    allUsers(limit: Int, offset: Int): [User]
+    users(limit: Int, offset: Int): [User]
+
     phase(id: Int!): Phase
-    allPhases(limit: Int, offset: Int): [Phase]
+    phases(username: String!, limit: Int, offset: Int): [Phase]
+
+    mesocycle(id: Int!): Mesocycle
+    mesocycles(username: String!, limit: Int, offset: Int): [Mesocycle]
+
+    microcycle(id: Int!): Microcycle
+    microcycles(username: String!, limit: Int, offset: Int): [Microcycle]
+
+    session(id: Int!): Session
+    sessions(username: String!, limit: Int, offset: Int): [Session]
+
+    set(id: Int!): Set
+    sets(username: String!, limit: Int, offset: Int): [Set]
   }
 
   type Mutation {
     createUser(name: String!, weight: Int!): User!
     updateUser(id: Int!, name: String!, weight: Int!): User!
-    addPhase(
+
+    createPhase(
       username: String!
       date: String!
       user_id: Int!
       name: String!
     ): Phase!
     updatePhase(id: Int!, date: String!, user_id: Int!, name: String!): Phase!
+
+    createMesocycle(
+      username: String!
+      date: String!
+      phase_id: Int!
+      user_id: Int!
+    ): Mesocycle!
+    updateMesocycle(
+      id: Int!
+      date: String!
+      phase_id: Int!
+      user_id: Int!
+    ): Mesocycle!
   }
 `;
 

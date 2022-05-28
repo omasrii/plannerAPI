@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 const {
   findMesocycle,
   getMesocycles,
-  addMesocycle,
+  createMesocycle,
   updateMesocycle,
 } = require('../../db/index.js');
 
@@ -54,7 +54,7 @@ router
     const { date, phase_id, user_id } = mesocycle;
     console.log('In mesocycles POST route for user', username + '.');
     try {
-      const data = await addMesocycle(username, mesocycle);
+      const data = await createMesocycle(username, mesocycle);
       res.status(200).send(data);
     } catch (err) {
       console.error(err);

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 const {
   findPhase,
   getPhases,
-  addPhase,
+  createPhase,
   updatePhase,
 } = require('../../db/index.js');
 
@@ -54,7 +54,7 @@ router
         res.status(400).send('Incomplete phase object received.');
         return;
       }
-      let data = await addPhase(username, phase);
+      let data = await createPhase(username, phase);
       res.status(201).send(data);
     } catch (err) {
       console.error(err);

@@ -149,7 +149,7 @@ const getPhases = async (username, limit = 100, offset = 0) => {
     });
   }
 };
-const addPhase = async (username, newPhase) => {
+const createPhase = async (username, newPhase) => {
   return new Promise(async (resolve, reject) => {
     try {
       let { name, date } = newPhase;
@@ -250,7 +250,7 @@ const getMesocycles = async (username, limit = 100, offset = 0) => {
   }
 };
 
-const addMesocycle = async (username, newMesocycle) => {
+const createMesocycle = async (username, newMesocycle) => {
   let { date, phase_id, user_id } = newMesocycle;
   return new Promise(async (resolve, reject) => {
     try {
@@ -278,7 +278,7 @@ const updateMesocycle = async (updatedMesocycle) => {
   const { id, date, phase_id, user_id } = updatedMesocycle;
   return new Promise(async (resolve, reject) => {
     try {
-      const mesocycle = await models.Mesocycle.update(
+      await models.Mesocycle.update(
         {
           date: date, //if newDate isn't in the correct format, it still runs but won't update that field
           phase_id: Number(phase_id),
@@ -290,6 +290,8 @@ const updateMesocycle = async (updatedMesocycle) => {
           },
         }
       );
+      const mesocycle = await models.Mesocycle.findByPk(id);
+
       resolve(mesocycle);
     } catch (err) {
       reject(err);
@@ -652,11 +654,11 @@ module.exports = {
   updateUser,
   findPhase,
   getPhases,
-  addPhase,
+  createPhase,
   updatePhase,
   findMesocycle,
   getMesocycles,
-  addMesocycle,
+  createMesocycle,
   updateMesocycle,
   findMicrocycle,
   getMicrocycles,

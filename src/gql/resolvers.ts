@@ -5,24 +5,65 @@ const resolvers = {
     async user(root, { id }, { models }) {
       return models.Users.findByPk(id);
     },
-    allUsers: async (root, { limit, offset }, { models }) =>
+    users: async (root, { limit, offset }, { models }) =>
       await db.getUsers(limit, offset),
 
     async phase(root, { id }, { models }) {
       return models.Phase.findByPk(id);
     },
-    allPhases: async (root, { limit, offset }, { models }) =>
-      await db.getPhases(limit, offset),
+    phases: async (root, { username, limit, offset }, { models }) =>
+      await db.getPhases(username, limit, offset),
+
+    async mesocycle(root, { id }, { models }) {
+      return models.Mesocycle.findByPk(id);
+    },
+
+    mesocycles: async (root, { username, limit, offset }, { models }) =>
+      await db.getMesocycles(username, limit, offset),
+
+    async microcycle(root, { id }, { models }) {
+      return models.Microcycle.findByPk(id);
+    },
+
+    microcycles: async (root, { username, limit, offset }, { models }) =>
+      await db.getMicrocycles(username, limit, offset),
+
+    async session(root, { id }, { models }) {
+      return models.Session.findByPk(id);
+    },
+
+    sessions: async (root, { username, limit, offset }, { models }) =>
+      await db.getSessions(username, limit, offset),
+
+    async set(root, { id }, { models }) {
+      return models.Set.findByPk(id);
+    },
+
+    sets: async (root, { username, limit, offset }, { models }) =>
+      await db.getSets(username, limit, offset),
   },
+
   Mutation: {
     createUser: async (root, { name, weight }, { models }) =>
       await db.createUser({ name, weight }),
     updateUser: async (root, { id, name, weight }, { models }) =>
       await db.updateUser({ id, name, weight }),
-    addPhase: async (root, { username, date, user_id, name }, { models }) =>
-      await db.addPhase(username, { date, user_id, name }),
+
+    createPhase: async (root, { username, date, user_id, name }, { models }) =>
+      await db.createPhase(username, { date, user_id, name }),
     updatePhase: async (root, { id, date, user_id, name }, { models }) =>
       await db.updatePhase({ id, date, user_id, name }),
+
+    createMesocycle: async (
+      root,
+      { username, date, phase_id, user_id },
+      { models }
+    ) => await db.createMesocycle(username, { date, phase_id, user_id }),
+    updateMesocycle: async (
+      root,
+      { id, date, phase_id, user_id },
+      { models }
+    ) => await db.updateMesocycle({ id, date, phase_id, user_id }),
   },
 };
 

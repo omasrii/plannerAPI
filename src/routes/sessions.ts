@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 const {
   findSession,
   getSessions,
-  addSession,
+  createSession,
   updateSession,
   getSetsForSession,
 } = require('../../db/index.js');
@@ -60,7 +60,7 @@ router
       return;
     }
     try {
-      let data = await addSession(username, session);
+      let data = await createSession(username, session);
       res.status(200).send(data);
     } catch (err) {
       console.error(err);

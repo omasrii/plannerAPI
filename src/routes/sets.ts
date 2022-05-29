@@ -1,6 +1,6 @@
 const express = require('express');
 import { Request, Response } from 'express';
-const { findSet, getSets, addSet, updateSet } = require('../../db/index.js');
+const { findSet, getSets, createSet, updateSet } = require('../../db/index.js');
 
 const router = express.Router();
 
@@ -39,7 +39,7 @@ router
       return;
     }
     try {
-      let data = await addSet(username, set);
+      let data = await createSet(username, set);
       res.status(200).send(data);
     } catch (err) {
       console.error(err);

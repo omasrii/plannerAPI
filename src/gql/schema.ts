@@ -92,6 +92,58 @@ const typeDefs = gql`
       phase_id: Int!
       user_id: Int!
     ): Mesocycle!
+
+    createMicrocycle(
+      username: String!
+      date: String!
+      deload: Boolean
+      mesocycle_id: Int!
+      phase_id: Int!
+      user_id: Int!
+    ): Microcycle!
+    updateMicrocycle(
+      id: Int!
+      date: String!
+      deload: Boolean
+      mesocycle_id: Int!
+      phase_id: Int!
+      user_id: Int!
+    ): Microcycle!
+
+    createSession(
+      username: String!
+      date: String!
+      name: String!
+      microcycle_id: Int!
+      mesocycle_id: Int!
+      phase_id: Int!
+      user_id: Int!
+    ): Session!
+    updateSession(
+      id: Int!
+      date: String!
+      name: String!
+      microcycle_id: Int!
+      mesocycle_id: Int!
+      phase_id: Int!
+      user_id: Int!
+    ): Session!
+
+    createSet(
+      username: String!
+      id: Int!
+      load: Int!
+      reps: Int!
+      session_id: Int!
+      user_id: Int!
+    ): Set!
+    updateSet(
+      id: Int!
+      load: Int!
+      reps: Int!
+      session_id: Int!
+      user_id: Int!
+    ): Set!
   }
 `;
 

@@ -347,7 +347,7 @@ const getMicrocycles = async (username, limit = 100, offset = 0) => {
   }
 };
 
-const addMicrocycle = async (username, newMicrocycle) => {
+const createMicrocycle = async (username, newMicrocycle) => {
   let { date, deload, mesocycle_id, phase_id, user_id } = newMicrocycle;
   return new Promise(async (resolve, reject) => {
     try {
@@ -460,7 +460,7 @@ const getSessionsForMicrocycle = async (id) => {
   }
 };
 
-const addSession = async (username, newSession) => {
+const createSession = async (username, newSession) => {
   let { date, name, phase_id, mesocycle_id, microcycle_id, user_id } =
     newSession;
   return new Promise(async (resolve, reject) => {
@@ -573,7 +573,7 @@ const getSetsForSession = async (id) => {
   }
 };
 
-const addSet = (username, newSet) => {
+const createSet = (username, newSet) => {
   let { id, load, reps, session_id, user_id } = newSet;
   return new Promise(async (resolve, reject) => {
     try {
@@ -662,16 +662,16 @@ module.exports = {
   updateMesocycle,
   findMicrocycle,
   getMicrocycles,
-  addMicrocycle,
+  createMicrocycle,
   updateMicrocycle,
   findSession,
   getSessions,
   getSessionsForMicrocycle,
-  addSession,
+  createSession,
   updateSession,
   findSet,
   getSets,
   getSetsForSession,
-  addSet,
+  createSet,
   updateSet,
 };

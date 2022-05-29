@@ -64,6 +64,81 @@ const resolvers = {
       { id, date, phase_id, user_id },
       { models }
     ) => await db.updateMesocycle({ id, date, phase_id, user_id }),
+
+    createMicrocycle: async (
+      root,
+      { username, date, deload, mesocycle_id, phase_id, user_id },
+      { models }
+    ) =>
+      await db.createMicrocycle(username, {
+        date,
+        deload,
+        mesocycle_id,
+        phase_id,
+        user_id,
+      }),
+
+    updateMicrocycle: async (
+      root,
+      { id, date, deload, mesocycle_id, phase_id, user_id },
+      { models }
+    ) =>
+      await db.updateMicrocycle({
+        id,
+        date,
+        deload,
+        mesocycle_id,
+        phase_id,
+        user_id,
+      }),
+
+    createSession: async (
+      root,
+      { username, date, name, phase_id, mesocycle_id, microcycle_id, user_id },
+      { models }
+    ) =>
+      await db.createSession(username, {
+        date,
+        name,
+        phase_id,
+        mesocycle_id,
+        microcycle_id,
+        user_id,
+      }),
+
+    updateSession: async (
+      root,
+      { id, date, name, phase_id, mesocycle_id, microcycle_id, user_id },
+      { models }
+    ) =>
+      await db.updateSession({
+        id,
+        date,
+        name,
+        phase_id,
+        mesocycle_id,
+        microcycle_id,
+        user_id,
+      }),
+
+    createSet: async (
+      root,
+      { username, id, load, reps, session_id, user_id },
+      { models }
+    ) => await db.createSet(username, { id, load, reps, session_id, user_id }),
+
+    updateSet: async (
+      root,
+      { id, load, reps, session_id, user_id },
+      { models }
+    ) =>
+      await db.updateSet({
+        id,
+        load,
+        reps,
+        session_id,
+        user_id,
+      }),
   },
 };
 

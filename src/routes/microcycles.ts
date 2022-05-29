@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 const {
   findMicrocycle,
   getMicrocycles,
-  addMicrocycle,
+  createMicrocycle,
   updateMicrocycle,
   getSessionsForMicrocycle,
 } = require('../../db/index.js');
@@ -49,7 +49,7 @@ router
     try {
       const { username } = req.params;
       const { microcycle } = req.body;
-      const data = await addMicrocycle(username, microcycle);
+      const data = await createMicrocycle(username, microcycle);
       res.status(200).send(data);
     } catch (err) {
       console.error(err);
@@ -59,8 +59,7 @@ router
   .put('/', async (req: Request, res: Response) => {
     const { microcycle } = req.body;
     console.log(microcycle);
-    const { id, date, deload, mesocycle_id, phase_id, user_id } =
-      microcycle;
+    const { id, date, deload, mesocycle_id, phase_id, user_id } = microcycle;
     if (
       id === undefined ||
       date === undefined ||

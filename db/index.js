@@ -1,15 +1,29 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
-  process.env.MYSQL_DB,
-  process.env.MYSQL_USER,
-  process.env.MYSQL_PASSWORD,
-  {
-    host: process.env.MYSQL_HOST,
-    dialect: 'mysql',
-  }
-);
+const mysql2 = require('mysql2'); // Needed to fix sequelize issues with WebPack
+
+let sequelize;
+try {
+  sequelize = new Sequelize(
+    process.env.MYSQL_DB,
+    process.env.MYSQL_USER,
+    process.env.MYSQL_PASSWORD,
+    {
+      host: process.env.MYSQL_HOST,
+      dialect: 'mysql',
+      dialectModule: mysql2, // Needed to fix sequelize issues with WebPack
+      port: process.env.MYSQL_PORT,
+    }
+  );
+} catch (error) {
+  console.log(error);
+}
 var initModels = require('../models/init-models');
-const models = initModels(sequelize);
+let models;
+try {
+  models = initModels(sequelize);
+} catch (error) {
+  console.log(error);
+}
 
 const getDate = () => {
   return new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -171,10 +185,9 @@ const addPhase = async (username, newPhase) => {
 
 const updatePhase = async (updatedPhase) => {
   const { id, date, user_id, name } = updatedPhase;
-  console.log(updatedPhase);
   return new Promise(async (resolve, reject) => {
     try {
-      await models.Phase.update(
+      const phase = await models.Phase.update(
         {
           date: date, //if newDate isn't in the correct format, it still runs but won't update that field
           user_id: user_id,
@@ -186,11 +199,6 @@ const updatePhase = async (updatedPhase) => {
           },
         }
       );
-
-      const phase = await models.Phase.findByPk(id);
-
-      console.log(phase);
-
       resolve(phase);
     } catch (err) {
       reject(err);
@@ -458,6 +466,34 @@ const getSessionsForMicrocycle = async (id) => {
   }
 };
 
+// get most frequent sessions for a user that appear more than 10 times in the last 30 days
+const getMostFrequentSessions = async (username) => {
+  try {
+    let { id } = await findUser(username);
+    const data = await models.Sessions.findAll({
+      where: {
+        user_id: id,
+        // last 21 days (3 weeks)
+        date: {
+          [Sequelize.Op.gte]: new Date(
+            new Date() - 21 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+        },
+      },
+      attributes: [
+        'name',
+        [sequelize.fn('COUNT', sequelize.col('name')), 'count'],
+      ],
+      group: ['name'],
+      having: sequelize.literal('count >= 5'),
+      order: [[sequelize.fn('COUNT', sequelize.col('name')), 'DESC']],
+    });
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
 const addSession = async (username, newSession) => {
   let { date, name, phase_id, mesocycle_id, microcycle_id, user_id } =
     newSession;
@@ -616,34 +652,6 @@ const updateSet = (updatedSet) => {
   });
 };
 
-// let date = new Date().toISOString().slice(0, 19).replace('T', ' '); // date format
-// //add a phase for user 1
-// models.Phase.create({
-//   date: date,
-//   user_id: 1
-// })
-// add a mesocycle
-// models.Mesocycle.create({
-//   date: date,
-//   user_id: 1,
-//   phase_id: 1
-// })
-// models.Microcycle.create({
-//   date: date,
-//   deload: 0,
-//   mesocycle_id: 1,
-//   phase_id: 1,
-//   user_id: 1,
-// })
-// models.Sessions.create({
-//   date: date,
-//   microcycle_id: 1,
-//   mesocycle_id: 1,
-//   phase_id: 1,
-//   user_id: 1,
-//   name: "brolifts"
-// })
-
 module.exports = {
   models,
   findUser,
@@ -665,6 +673,7 @@ module.exports = {
   findSession,
   getSessions,
   getSessionsForMicrocycle,
+  getMostFrequentSessions,
   addSession,
   updateSession,
   findSet,

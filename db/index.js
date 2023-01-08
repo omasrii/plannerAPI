@@ -485,7 +485,7 @@ const getMostFrequentSessions = async (username) => {
         [sequelize.fn('COUNT', sequelize.col('name')), 'count'],
       ],
       group: ['name'],
-      having: sequelize.literal('count >= 5'),
+      having: sequelize.literal('count >= 2'),
       order: [[sequelize.fn('COUNT', sequelize.col('name')), 'DESC']],
     });
     return data;

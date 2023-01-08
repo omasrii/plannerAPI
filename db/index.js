@@ -466,7 +466,7 @@ const getSessionsForMicrocycle = async (id) => {
   }
 };
 
-// get most frequent sessions for a user that appear more than 10 times in the last 30 days
+// get most frequent sessions for a user that appear 2 times or more in the last 30 days
 const getMostFrequentSessions = async (username) => {
   try {
     let { id } = await findUser(username);
